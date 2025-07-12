@@ -3,6 +3,7 @@ import { NextResponse } from 'next/server';
 export async function GET() {
   const org = process.env.GITHUB_ORG;
   const token = process.env.GITHUB_TOKEN;
+  const apiUrl = process.env.GITHUB_API_URL || 'https://api.github.com';
 
   if (!org || !token) {
     return NextResponse.json(
@@ -11,7 +12,9 @@ export async function GET() {
     );
   }
 
-  const res = await fetch(`https://api.github.com/orgs/${org}/repos`, {
+  const endpoint = `${apiUrl}/orgs/${org}/repos`;
+  console.debug('Fetching repos from', endpoint);
+  const res = await fetch(endpoint, {
     headers: {
       Authorization: `Bearer ${token}`,
       Accept: 'application/vnd.github+json',
@@ -26,5 +29,7 @@ export async function GET() {
   }
 
   const data = await res.json();
+  console.debug('GitHub response status', res.status);
+  console.debug('GitHub response body', data);
   return NextResponse.json(data);
 }

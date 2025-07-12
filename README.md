@@ -192,4 +192,5 @@ Set the following variables in your `.env.local` file:
 - `NEXT_PUBLIC_SITE_URL` - Base URL of the app
 - `GITHUB_ORG` - GitHub organization name
 - `GITHUB_TOKEN` - Personal access token with repo access
+- `GITHUB_API_URL` - Base URL for the GitHub API
 
