@@ -12,18 +12,18 @@ export async function GET() {
     );
   }
 
-  const endpoint = `${apiUrl}/orgs/${org}/repos`;
+  const endpoint = `${apiUrl}/orgs/${org}/projects`;
   const res = await fetch(endpoint, {
     headers: {
       Authorization: `Bearer ${token}`,
-      Accept: 'application/vnd.github+json',
+      Accept: 'application/vnd.github.inertia-preview+json',
     },
     next: { revalidate: 3600 },
   });
 
   if (!res.ok) {
     return NextResponse.json(
-      { error: 'Failed to fetch repositories' },
+      { error: 'Failed to fetch projects' },
       { status: res.status }
     );
   }

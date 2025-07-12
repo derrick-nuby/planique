@@ -1,6 +1,8 @@
 "use client";
 
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Button } from "@/components/ui/button";
+import { Link } from "@/i18n/navigation";
 import { useRepository } from "../hooks/useRepository";
 
 interface Props {
@@ -48,6 +50,13 @@ export default function RepositoryDetails({ repoName }: Props) {
             <span>
               <strong>Default Branch:</strong> {repo.default_branch}
             </span>
+          </div>
+          <div className="pt-4">
+            <Button asChild variant="outline" size="sm">
+              <Link href={`/analysis/repos/${repo.name}/projects`}>
+                View Projects
+              </Link>
+            </Button>
           </div>
         </CardContent>
       </Card>
