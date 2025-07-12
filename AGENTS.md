@@ -24,6 +24,7 @@ Planique is an executive insights platform that transforms GitHub project activi
 src/
 ├── app/                    # Next.js App Router directory
 │   ├── [locale]/          # Internationalized routes
+│       ├── test/page.tsx  # Example on how to implement translation
 │   ├── globals.css        # Global styles
 │   └── providers.tsx      # App-level providers
 ├── components/
