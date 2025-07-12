@@ -1,5 +1,8 @@
 {
   "testing": {
     "hello": "Salut"
+  },
+  "analysis": {
+    "title": "Analyse des dépôts"
   }
 }
