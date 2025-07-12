@@ -1,5 +1,5 @@
 import axios from 'axios';
-import { GitHubRepo } from '../types/repository.types';
+import { GitHubRepo, GitHubRepoDetails } from '../types/repository.types';
 
 const getRepositories = async (): Promise<GitHubRepo[]> => {
   const response = await axios.get<GitHubRepo[]>('/api/repos');
@@ -7,4 +7,10 @@ const getRepositories = async (): Promise<GitHubRepo[]> => {
   return response.data;
 };
 
-export const repositoryService = { getRepositories };
+const getRepository = async (name: string): Promise<GitHubRepoDetails> => {
+  const response = await axios.get<GitHubRepoDetails>(`/api/repos/${name}`);
+  console.debug('Repository fetched', response.data);
+  return response.data;
+};
+
+export const repositoryService = { getRepositories, getRepository };
