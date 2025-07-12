@@ -1,4 +1,4 @@
-import { RepositoryTable } from '@/features/repositories/components';
+import RepositoryTable from '@/features/repositories/components/RepositoryTable';
 import { useTranslations } from 'next-intl';
 
 export default function AnalysisPage() {
