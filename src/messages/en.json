@@ -1,5 +1,8 @@
 {
   "testing": {
     "hello": "Hello"
+  },
+  "analysis": {
+    "title": "Repository Analysis"
   }
 }

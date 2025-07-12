@@ -184,3 +184,12 @@ Planique isn’t just a project dashboard. It’s an open canvas for clarity, co
 
     - Build Gantt-style charts from milestones and issue due dates.
     - Export: Image/PDF of Gantt chart
+
+## Environment Variables
+
+Set the following variables in your `.env.local` file:
+
+- `NEXT_PUBLIC_SITE_URL` - Base URL of the app
+- `GITHUB_ORG` - GitHub organization name
+- `GITHUB_TOKEN` - Personal access token with repo access
+
