@@ -7,19 +7,19 @@ export const viewport: Viewport = {
 };
 
 export async function generateMetadata(): Promise<Metadata> {
-  const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://amadeni.derrick.rw';
+  const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://planique.derrick.rw';
 
   return {
     metadataBase: new URL(siteUrl),
     title: {
-      default: "Amadeni - Digital Debt-Tracking for Kiosks",
-      template: "%s | Amadeni"
+      default: "Planique - Executive Insights Platform",
+      template: "%s | Planique"
     },
-    description: "A digital debt-tracking application designed for small kiosks and informal businesses in Rwanda. Track customer debts easily with offline-capable functionality.",
-    keywords: ["debt-tracking", "small business", "kiosk", "Rwanda", "offline-first", "Amadeni", "customer management"],
+    description: "Transform GitHub project activity into clear, business-friendly reports and visualizations. Designed for non-technical stakeholders like CEOs, project managers, and operations leads.",
+    keywords: ["github", "project management", "executive insights", "business intelligence", "dashboard", "analytics", "reporting", "project tracking"],
     authors: [{ name: "Derrick Iradukunda" }],
     creator: "Derrick Nuby",
-    publisher: "Amadeni",
+    publisher: "Planique",
     formatDetection: {
       email: false,
       address: false,
@@ -29,22 +29,22 @@ export async function generateMetadata(): Promise<Metadata> {
       type: "website",
       locale: "en_US",
       url: siteUrl,
-      siteName: "Amadeni",
-      title: "Amadeni - Digital Debt-Tracking for Kiosks",
-      description: "A digital debt-tracking application designed for small kiosks and informal businesses in Rwanda. Track customer debts easily with offline-capable functionality.",
+      siteName: "Planique",
+      title: "Planique - Executive Insights Platform",
+      description: "Transform GitHub project activity into clear, business-friendly reports and visualizations. Designed for non-technical stakeholders like CEOs, project managers, and operations leads.",
       images: [
         {
           url: `${siteUrl}/images/favicons/android-chrome-512x512.png`,
           width: 512,
           height: 512,
-          alt: "Amadeni - Digital Debt-Tracking for Kiosks",
+          alt: "Planique - Executive Insights Platform",
         },
       ],
     },
     twitter: {
       card: "summary_large_image",
-      title: "Amadeni - Digital Debt-Tracking for Kiosks",
-      description: "A digital debt-tracking application designed for small kiosks and informal businesses in Rwanda. Track customer debts easily with offline-capable functionality.",
+      title: "Planique - Executive Insights Platform",
+      description: "Transform GitHub project activity into clear, business-friendly reports and visualizations. Designed for non-technical stakeholders like CEOs, project managers, and operations leads.",
       images: [`${siteUrl}/images/favicons/android-chrome-512x512.png`],
       creator: "@Derrick-Nuby",
     },
