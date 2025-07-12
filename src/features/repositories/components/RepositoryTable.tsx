@@ -1,30 +1,36 @@
 "use client";
 
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { Table, TableBody, TableHead, TableHeader, TableRow, TableCell } from "@/components/ui/table";
-import { Input } from "@/components/ui/input";
-import {
-  type ColumnDef,
-  flexRender,
-  getCoreRowModel,
-  getFilteredRowModel,
-  getSortedRowModel,
-  useReactTable,
-} from "@tanstack/react-table";
-import { useMemo, useState } from "react";
+import { Card, CardContent } from "@/components/ui/card";
+import { useMemo } from "react";
+import { MantineReactTable, useMantineReactTable, type MRT_ColumnDef } from "mantine-react-table";
 import { useRepositories } from "../hooks/useRepositories";
 import type { GitHubRepo } from "../types/repository.types";
 
 export default function RepositoryTable() {
   const { data: repos, isLoading, error } = useRepositories();
-  const [globalFilter, setGlobalFilter] = useState("");
 
-  const columns = useMemo<ColumnDef<GitHubRepo>[]>(
+  const getLanguageColor = (lang: string | null) => {
+    const colors: Record<string, string> = {
+      TypeScript: "bg-blue-100 text-blue-800 border-blue-200",
+      JavaScript: "bg-yellow-100 text-yellow-800 border-yellow-200",
+      Python: "bg-green-100 text-green-800 border-green-200",
+      Dart: "bg-cyan-100 text-cyan-800 border-cyan-200",
+      Rust: "bg-orange-100 text-orange-800 border-orange-200",
+      Vue: "bg-emerald-100 text-emerald-800 border-emerald-200",
+      Go: "bg-indigo-100 text-indigo-800 border-indigo-200",
+      CSS: "bg-pink-100 text-pink-800 border-pink-200",
+      Solidity: "bg-purple-100 text-purple-800 border-purple-200",
+    };
+    return colors[lang || ""] || "bg-gray-100 text-gray-800 border-gray-200";
+  };
+
+  const columns = useMemo<MRT_ColumnDef<GitHubRepo>[]>(
     () => [
       {
         accessorKey: "name",
         header: "Repository Name",
-        cell: ({ row }) => (
+        size: 250,
+        Cell: ({ row }) => (
           <a
             href={row.original.html_url}
             target="_blank"
@@ -38,31 +44,19 @@ export default function RepositoryTable() {
       {
         accessorKey: "description",
         header: "Description",
-        cell: (info) => (
+        size: 400,
+        Cell: ({ cell }) => (
           <span className="text-gray-700 text-sm leading-relaxed">
-            {info.getValue<string>() ?? <span className="text-gray-400 italic">No description</span>}
+            {cell.getValue<string>() ?? <span className="text-gray-400 italic">No description</span>}
           </span>
         ),
       },
       {
         accessorKey: "language",
         header: "Language",
-        cell: (info) => {
-          const language = info.getValue<string>();
-          const getLanguageColor = (lang: string | null) => {
-            const colors: Record<string, string> = {
-              TypeScript: "bg-blue-100 text-blue-800 border-blue-200",
-              JavaScript: "bg-yellow-100 text-yellow-800 border-yellow-200",
-              Python: "bg-green-100 text-green-800 border-green-200",
-              Dart: "bg-cyan-100 text-cyan-800 border-cyan-200",
-              Rust: "bg-orange-100 text-orange-800 border-orange-200",
-              Vue: "bg-emerald-100 text-emerald-800 border-emerald-200",
-              Go: "bg-indigo-100 text-indigo-800 border-indigo-200",
-              CSS: "bg-pink-100 text-pink-800 border-pink-200",
-            };
-            return colors[lang || ""] || "bg-gray-100 text-gray-800 border-gray-200";
-          };
-
+        size: 150,
+        Cell: ({ cell }) => {
+          const language = cell.getValue<string>();
           return language ? (
             <span className={`px-3 py-1 rounded-none text-xs font-medium border ${getLanguageColor(language)}`}>
               {language}
@@ -71,12 +65,27 @@ export default function RepositoryTable() {
             <span className="text-gray-400 italic text-sm">Unknown</span>
           );
         },
+        filterVariant: "select",
+        mantineFilterSelectProps: {
+          data: [
+            { value: "TypeScript", label: "TypeScript" },
+            { value: "JavaScript", label: "JavaScript" },
+            { value: "Python", label: "Python" },
+            { value: "Dart", label: "Dart" },
+            { value: "Rust", label: "Rust" },
+            { value: "Vue", label: "Vue" },
+            { value: "Go", label: "Go" },
+            { value: "CSS", label: "CSS" },
+            { value: "Solidity", label: "Solidity" },
+          ],
+        },
       },
       {
         accessorKey: "private",
         header: "Visibility",
-        cell: (info) => {
-          const isPrivate = info.getValue<boolean>();
+        size: 120,
+        Cell: ({ cell }) => {
+          const isPrivate = cell.getValue<boolean>();
           return (
             <span
               className={`px-3 py-1 rounded-none text-xs font-semibold border ${isPrivate ? "bg-red-50 text-red-700 border-red-200" : "bg-green-50 text-green-700 border-green-200"
@@ -86,36 +95,166 @@ export default function RepositoryTable() {
             </span>
           );
         },
+        filterVariant: "select",
+        mantineFilterSelectProps: {
+          data: [
+            { value: "true", label: "Private" },
+            { value: "false", label: "Public" },
+          ],
+        },
+        // For export, show the actual text value instead of the component
+        accessorFn: (row) => (row.private ? "Private" : "Public"),
+      },
+      {
+        accessorKey: "html_url",
+        header: "Repository URL",
+        size: 300,
+        Cell: ({ cell }) => (
+          <a
+            href={cell.getValue<string>()}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="text-blue-600 hover:text-blue-800 text-sm truncate block"
+          >
+            {cell.getValue<string>()}
+          </a>
+        ),
+      },
+      {
+        accessorKey: "created_at",
+        header: "Created",
+        size: 120,
+        Cell: ({ cell }) => {
+          const date = new Date(cell.getValue<string>());
+          return <span className="text-sm text-gray-600">{date.toLocaleDateString()}</span>;
+        },
+        filterVariant: "date-range",
+        sortingFn: "datetime",
+      },
+      {
+        accessorKey: "updated_at",
+        header: "Last Updated",
+        size: 120,
+        Cell: ({ cell }) => {
+          const date = new Date(cell.getValue<string>());
+          return <span className="text-sm text-gray-600">{date.toLocaleDateString()}</span>;
+        },
+        filterVariant: "date-range",
+        sortingFn: "datetime",
       },
     ],
     [],
   );
 
-  const table = useReactTable({
-    data: repos ?? [],
+  const table = useMantineReactTable({
     columns,
-    state: { globalFilter },
-    onGlobalFilterChange: setGlobalFilter,
-    globalFilterFn: (row, _columnId, value) => {
-      const search = String(value).toLowerCase();
-      return (
-        row.original.name.toLowerCase().includes(search) ||
-        (row.original.description?.toLowerCase().includes(search) ?? false)
-      );
+    data: repos ?? [],
+    enableColumnFilters: true,
+    enableGlobalFilter: true,
+    enableSorting: true,
+    enablePagination: true,
+    enableRowSelection: true,
+    enableColumnResizing: true,
+    enableDensityToggle: true,
+    enableFullScreenToggle: true,
+    enableHiding: true,
+    // Export functionality can be implemented using custom actions
+    // Remove unsupported export properties
+    enableRowActions: true,
+    renderRowActionMenuItems: () => [
+      // You can implement custom export actions here if needed
+      // For example using export-to-csv or other libraries
+    ],
+    initialState: {
+      pagination: { pageSize: 10, pageIndex: 0 },
+      density: "md",
+      columnVisibility: { description: false },
     },
-    getCoreRowModel: getCoreRowModel(),
-    getFilteredRowModel: getFilteredRowModel(),
-    getSortedRowModel: getSortedRowModel(),
-    debugTable: true,
-  });
-
-  if (isLoading) {
-    return (
-      <div className="flex items-center justify-center h-64">
-        <div className="text-lg text-gray-600">Loading repositories...</div>
+    paginationDisplayMode: "pages",
+    positionToolbarAlertBanner: "bottom",
+    mantineTopToolbarProps: {
+      style: {
+        backgroundColor: "#f9fafb",
+        borderBottom: "2px solid #d1d5db",
+        borderRadius: "0",
+      },
+    },
+    mantineBottomToolbarProps: {
+      style: {
+        backgroundColor: "#f9fafb",
+        borderTop: "2px solid #d1d5db",
+        borderRadius: "0",
+      },
+    },
+    mantineTableProps: {
+      style: {
+        border: "2px solid #d1d5db",
+        borderRadius: "0",
+      },
+    },
+    mantineTableHeadProps: {
+      style: {
+        backgroundColor: "#f3f4f6",
+        borderBottom: "2px solid #d1d5db",
+      },
+    },
+    mantineTableHeadCellProps: {
+      style: {
+        borderRight: "2px solid #d1d5db",
+        fontWeight: "bold",
+        color: "#374151",
+        fontSize: "14px",
+        padding: "16px",
+      },
+    },
+    mantineTableBodyProps: {
+      style: {
+        backgroundColor: "#ffffff",
+      },
+    },
+    mantineTableBodyCellProps: ({ row }) => ({
+      style: {
+        borderRight: "2px solid #d1d5db",
+        borderBottom: "1px solid #e5e7eb",
+        padding: "12px 16px",
+        backgroundColor: row.index % 2 === 0 ? "#ffffff" : "#f9fafb",
+      },
+    }),
+    mantineTableBodyRowProps: {
+      sx: {
+        '&:hover': {
+          backgroundColor: "#f3f4f6",
+        },
+      },
+    },
+    mantinePaginationProps: {
+      style: {
+        border: "2px solid #d1d5db",
+        borderRadius: "0",
+        backgroundColor: "#f9fafb",
+      },
+    },
+    state: {
+      isLoading,
+      showAlertBanner: !!error,
+    },
+    renderTopToolbarCustomActions: ({ table }) => (
+      <div className="flex items-center gap-4">
+        <div className="flex items-center gap-2">
+          <div className="w-2 h-8 bg-blue-600 rounded-none"></div>
+          <span className="text-xl font-bold text-gray-800">GitHub Repositories</span>
+        </div>
+        <span className="text-sm font-normal text-gray-500 bg-white px-3 py-1 border-2 border-gray-300 rounded-none">
+          {repos?.length || 0} repositories
+        </span>
+        <div className="flex items-center gap-2 ml-auto">
+          <span className="text-xs text-gray-500">
+            {table.getSelectedRowModel().rows.length > 0 && `${table.getSelectedRowModel().rows.length} selected`}
+          </span>
+        </div>
       </div>
-    );
-  }
+    ),
+  });
 
   if (error) {
     return (
@@ -126,87 +265,11 @@ export default function RepositoryTable() {
   }
 
   return (
-    <div className="w-full p-6">
+    <div className="w-full max-w-full mx-auto p-6">
       <Card className="rounded-none border-2 border-gray-300 shadow-lg">
-        <CardHeader className="bg-gray-50 border-b-2 border-gray-300 rounded-none">
-          <CardTitle className="text-2xl font-bold text-gray-800 flex items-center gap-2">
-            <div className="w-2 h-8 bg-blue-600 rounded-none"></div>
-            GitHub Repositories
-            <span className="ml-auto text-sm font-normal text-gray-500 bg-white px-3 py-1 border border-gray-300 rounded-none">
-              {table.getFilteredRowModel().rows.length} repositories
-            </span>
-          </CardTitle>
-        </CardHeader>
-        <CardContent className="p-6">
-          <div className="mb-6">
-            <Input
-              placeholder="Search repositories by name or description..."
-              value={globalFilter}
-              onChange={(e) => setGlobalFilter(e.target.value)}
-              className="rounded-none border-2 border-gray-300 focus:border-blue-500 focus:ring-0 h-12 text-base px-4 bg-white"
-            />
-          </div>
-
-          <div className="border-2 border-gray-300 rounded-none overflow-hidden">
-            <Table>
-              <TableHeader>
-                {table.getHeaderGroups().map((headerGroup) => (
-                  <TableRow key={headerGroup.id} className="bg-gray-100 border-b-2 border-gray-300 hover:bg-gray-100">
-                    {headerGroup.headers.map((header) => (
-                      <TableHead
-                        key={header.id}
-                        onClick={header.column.getToggleSortingHandler()}
-                        className="cursor-pointer select-none font-bold text-gray-800 h-14 px-6 border-r-2 border-gray-300 last:border-r-0 hover:bg-gray-200 transition-colors duration-150"
-                      >
-                        <div className="flex items-center gap-2">
-                          {flexRender(header.column.columnDef.header, header.getContext())}
-                          <span className="text-gray-500">
-                            {header.column.getIsSorted() === "asc"
-                              ? "↑"
-                              : header.column.getIsSorted() === "desc"
-                                ? "↓"
-                                : "↕"}
-                          </span>
-                        </div>
-                      </TableHead>
-                    ))}
-                  </TableRow>
-                ))}
-              </TableHeader>
-              <TableBody>
-                {table.getRowModel().rows.length ? (
-                  table.getRowModel().rows.map((row, index) => (
-                    <TableRow
-                      key={row.id}
-                      className={`border-b-2 border-gray-300 hover:bg-gray-50 transition-colors duration-150 ${index % 2 === 0 ? "bg-white" : "bg-gray-25"
-                        }`}
-                    >
-                      {row.getVisibleCells().map((cell) => (
-                        <TableCell
-                          key={cell.id}
-                          className="px-6 py-4 border-r-2 border-gray-300 last:border-r-0 align-top"
-                        >
-                          {flexRender(cell.column.columnDef.cell, cell.getContext())}
-                        </TableCell>
-                      ))}
-                    </TableRow>
-                  ))
-                ) : (
-                  <TableRow className="border-b-2 border-gray-300">
-                    <TableCell
-                      colSpan={columns.length}
-                      className="text-center py-12 text-gray-500 text-lg border-r-2 border-gray-300 last:border-r-0"
-                    >
-                      <div className="flex flex-col items-center gap-2">
-                        <div className="text-4xl">📁</div>
-                        <div>No repositories found</div>
-                        <div className="text-sm text-gray-400">Try adjusting your search criteria</div>
-                      </div>
-                    </TableCell>
-                  </TableRow>
-                )}
-              </TableBody>
-            </Table>
+        <CardContent className="p-0">
+          <div className="overflow-hidden">
+            <MantineReactTable table={table} />
           </div>
         </CardContent>
       </Card>
