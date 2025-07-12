@@ -1,0 +1,20 @@
+{
+  "common": {
+    "loading": "Chargement...",
+    "error": "Erreur",
+    "success": "Succès",
+    "cancel": "Annuler",
+    "save": "Enregistrer",
+    "delete": "Supprimer",
+    "edit": "Modifier",
+    "view": "Afficher",
+    "search": "Rechercher",
+    "clear": "Effacer",
+    "filter": "Filtrer",
+    "submit": "Soumettre",
+    "back": "Retour",
+    "next": "Suivant",
+    "select": "Sélectionner",
+    "required": "Obligatoire"
+  }
+}
