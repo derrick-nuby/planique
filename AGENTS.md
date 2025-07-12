@@ -281,3 +281,7 @@ export default function UserProfile({ userId }: UserProfileProps) {
 ---
 
 **Remember**: This is a living document. Update it as the project evolves and new patterns emerge.
+
+## Environment Variable
+
+- check and update .env.example for any update of the environment variable
