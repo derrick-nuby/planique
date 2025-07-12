@@ -1,4 +1,4 @@
-import { Lato } from 'next/font/google';
+import localFont from "next/font/local";
 import "../globals.css";
 import Providers from "../providers";
 import { generateMetadata, viewport } from "../metadata";
@@ -6,11 +6,15 @@ import { routing } from '@/i18n/routing';
 import { hasLocale, NextIntlClientProvider } from 'next-intl';
 import { notFound } from 'next/navigation';
 
-
-const lato = Lato({
-  subsets: ["latin"],
-  weight: ["100", "300", "400", "700", "900"],
-  variable: "--font-lato",
+const geistSans = localFont({
+  src: "./../fonts/GeistVF.woff",
+  variable: "--font-geist-sans",
+  weight: "100 900",
+});
+const geistMono = localFont({
+  src: "./../fonts/GeistMonoVF.woff",
+  variable: "--font-geist-mono",
+  weight: "100 900",
 });
 
 export { generateMetadata, viewport };
@@ -38,7 +42,7 @@ export default async function RootLayout({
   return (
     <html lang="en" suppressHydrationWarning>
       <body
-        className={`${lato.variable} ${lato.className} antialiased`}
+        className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >
         <NextIntlClientProvider locale={locale} messages={messages}>
           <Providers>
