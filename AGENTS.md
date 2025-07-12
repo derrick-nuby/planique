@@ -4,7 +4,9 @@ This Agents.md file provides comprehensive guidance for AI agents working with t
 
 ## Project Overview
 
-Planique is a Next.js application built with TypeScript, featuring:
+**IMPORTANT**: Always check the [README.md](./README.md) for project understanding and context.
+
+Planique is an executive insights platform that transforms GitHub project activity into business-friendly reports. Built with:
 
 - **Framework**: Next.js 15.3.5 with App Router
 - **Language**: TypeScript

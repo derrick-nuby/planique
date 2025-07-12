@@ -1,5 +1,9 @@
 # Planique
 
+<div align="center">
+  <img src="public/favicon.ico" alt="Planique Logo" />
+</div>
+
 **Planique** is a modern executive insights platform that transforms GitHub project activity into clear, business-friendly reports and visualizations. Designed specifically for non-technical stakeholders like CEOs, project managers, and operations leads, Planique connects directly to GitHub and reveals the bigger picture—without requiring any technical background.
 
 At its core, Planique turns raw development data into strategic insight. It automatically aggregates information across multiple repositories and GitHub projects, analyzes timelines, milestones, and contributor activity, and presents everything through a sleek, interactive dashboard. Users can easily track weekly and monthly performance, monitor overdue tasks, understand project health, and drill down into specific milestones or teams—all from one unified workspace.
