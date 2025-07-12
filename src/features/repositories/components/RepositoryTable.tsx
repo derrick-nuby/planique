@@ -1,10 +1,13 @@
 "use client";
 
 import { Card, CardContent } from "@/components/ui/card";
+import { Button } from "@/components/ui/button";
 import { useMemo } from "react";
+import { Link } from "@/i18n/navigation";
 import { MantineReactTable, useMantineReactTable, type MRT_ColumnDef } from "mantine-react-table";
 import { useRepositories } from "../hooks/useRepositories";
 import type { GitHubRepo } from "../types/repository.types";
+import { exportToCsv, exportToXlsx } from "@/lib/exportUtils";
 
 export default function RepositoryTable() {
   const { data: repos, isLoading, error } = useRepositories();
@@ -31,14 +34,12 @@ export default function RepositoryTable() {
         header: "Repository Name",
         size: 250,
         Cell: ({ row }) => (
-          <a
-            href={row.original.html_url}
-            target="_blank"
-            rel="noopener noreferrer"
+          <Link
+            href={`/analysis/repos/${row.original.name}`}
             className="font-semibold text-blue-700 hover:text-blue-900 hover:underline transition-colors duration-200"
           >
             {row.original.name}
-          </a>
+          </Link>
         ),
       },
       {
@@ -251,6 +252,24 @@ export default function RepositoryTable() {
           <span className="text-xs text-gray-500">
             {table.getSelectedRowModel().rows.length > 0 && `${table.getSelectedRowModel().rows.length} selected`}
           </span>
+          <Button
+            variant="outline"
+            size="sm"
+            onClick={() =>
+              exportToCsv(table.getRowModel().rows.map((r) => r.original), 'repositories')
+            }
+          >
+            Export CSV
+          </Button>
+          <Button
+            variant="outline"
+            size="sm"
+            onClick={() =>
+              exportToXlsx(table.getRowModel().rows.map((r) => r.original), 'repositories')
+            }
+          >
+            Export XLSX
+          </Button>
         </div>
       </div>
     ),

@@ -6,5 +6,6 @@ export const useRepositories = () => {
   return useQuery<GitHubRepo[]>({
     queryKey: ['repositories'],
     queryFn: repositoryService.getRepositories,
+    staleTime: 3600 * 1000,
   });
 };
