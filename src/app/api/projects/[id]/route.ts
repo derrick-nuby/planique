@@ -94,19 +94,35 @@ export async function GET(request: NextRequest) {
                   __typename
                   ... on ProjectV2ItemFieldTextValue {
                     text
-                    field { name }
+                    field {
+                      ... on ProjectV2FieldCommon {
+                        name
+                      }
+                    }
                   }
                   ... on ProjectV2ItemFieldSingleSelectValue {
                     name
-                    field { name }
+                    field {
+                      ... on ProjectV2FieldCommon {
+                        name
+                      }
+                    }
                   }
                   ... on ProjectV2ItemFieldDateValue {
                     date
-                    field { name }
+                    field {
+                      ... on ProjectV2FieldCommon {
+                        name
+                      }
+                    }
                   }
                   ... on ProjectV2ItemFieldMilestoneValue {
                     milestone { id title description dueOn }
-                    field { name }
+                    field {
+                      ... on ProjectV2FieldCommon {
+                        name
+                      }
+                    }
                   }
                 }
               }
