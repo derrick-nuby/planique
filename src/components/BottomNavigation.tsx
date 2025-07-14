@@ -4,7 +4,7 @@ import { Home, FolderGit2, KanbanSquare, BarChart2, Users } from "lucide-react";
 import { Link, usePathname } from "@/i18n/navigation";
 
 const navItems = [
-  { href: "/home", label: "Home", icon: Home },
+  { href: "/", label: "Home", icon: Home },
   { href: "/repositories", label: "Repositories", icon: FolderGit2 },
   { href: "/projects", label: "Projects", icon: KanbanSquare },
   { href: "/analytics", label: "Analytics", icon: BarChart2 },

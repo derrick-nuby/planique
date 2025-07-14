@@ -13,14 +13,17 @@ export async function GET() {
   console.debug('Fetching projects from', endpoint);
   const res = await fetch(endpoint, {
     headers: {
-      Authorization: `Bearer ${token}`,
+      Authorization: `token ${token}`,
       Accept: 'application/vnd.github.inertia-preview+json',
     },
     next: { revalidate: 3600 },
   });
 
+  console.debug('Projects response status', res.status);
+
   if (!res.ok) {
-    console.error('GitHub projects request failed with status', res.status);
+    const errorText = await res.text();
+    console.error('GitHub projects request failed', res.status, errorText);
     return NextResponse.json({ error: 'Failed to fetch projects' }, { status: res.status });
   }
 
