@@ -19,3 +19,17 @@ export function exportToCsv<T extends object>(data: T[], fileName: string) {
   document.body.removeChild(link);
   URL.revokeObjectURL(link.href);
 }
+
+import jsPDF from 'jspdf';
+import autoTable from 'jspdf-autotable';
+
+export function exportToPdf<T extends object>(data: T[], fileName: string) {
+  if (!data.length) return;
+  const doc = new jsPDF();
+  const headers = Object.keys(data[0]);
+  const rows = data.map(item =>
+    headers.map(h => String((item as Record<string, unknown>)[h] ?? ''))
+  );
+  autoTable(doc, { head: [headers], body: rows });
+  doc.save(fileName.endsWith('.pdf') ? fileName : `${fileName}.pdf`);
+}

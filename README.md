@@ -117,6 +117,7 @@ Planique isn’t just a project dashboard. It’s an open canvas for clarity, co
 
     - Commits, PRs, Issues, Reviews per user over a time range.
     - Export: Leaderboard
+    - Detailed view at `/users/[username]` with downloadable reports
 
 19. **User Activity Heatmap**
 
