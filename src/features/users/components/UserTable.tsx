@@ -4,6 +4,7 @@ import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Avatar } from "@/components/ui/avatar";
 import Image from "next/image";
+import Link from "next/link";
 import { useMemo } from "react";
 import { MantineReactTable, useMantineReactTable, type MRT_ColumnDef } from "mantine-react-table";
 import { useUsers } from "../hooks/useUsers";
@@ -32,9 +33,9 @@ export default function UserTable() {
         header: "Username",
         size: 200,
         Cell: ({ row }) => (
-          <a href={row.original.html_url} target="_blank" rel="noopener noreferrer" className="text-blue-600 hover:text-blue-800">
+          <Link href={`./${row.original.login}`} className="text-blue-600 hover:text-blue-800">
             {row.original.login}
-          </a>
+          </Link>
         ),
       },
       {
