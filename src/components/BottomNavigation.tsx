@@ -25,7 +25,10 @@ export default function BottomNavigation() {
           return (
             <li key={item.href} className="flex flex-col items-center">
               <Link href={item.href} className="flex flex-col items-center gap-1">
-                <Icon size={size} className={classes} />
+                <Icon
+                  size={size}
+                  className={`${classes} ${idx === 2 ? 'p-1 rounded-full bg-blue-50' : ''}`}
+                />
                 <span className={`text-xs ${classes}`}>{item.label}</span>
               </Link>
             </li>

@@ -10,6 +10,7 @@ export async function GET() {
   }
 
   const endpoint = `${apiUrl}/orgs/${org}/members`;
+  console.debug('Fetching users from', endpoint);
   const res = await fetch(endpoint, {
     headers: {
       Authorization: `Bearer ${token}`,
@@ -19,6 +20,7 @@ export async function GET() {
   });
 
   if (!res.ok) {
+    console.error('GitHub users request failed with status', res.status);
     return NextResponse.json({ error: 'Failed to fetch users' }, { status: res.status });
   }
 

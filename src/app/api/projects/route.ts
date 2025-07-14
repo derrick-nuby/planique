@@ -10,15 +10,17 @@ export async function GET() {
   }
 
   const endpoint = `${apiUrl}/orgs/${org}/projects`;
+  console.debug('Fetching projects from', endpoint);
   const res = await fetch(endpoint, {
     headers: {
       Authorization: `Bearer ${token}`,
-      Accept: 'application/vnd.github+json',
+      Accept: 'application/vnd.github.inertia-preview+json',
     },
     next: { revalidate: 3600 },
   });
 
   if (!res.ok) {
+    console.error('GitHub projects request failed with status', res.status);
     return NextResponse.json({ error: 'Failed to fetch projects' }, { status: res.status });
   }
 
