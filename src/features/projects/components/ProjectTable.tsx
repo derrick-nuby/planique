@@ -4,6 +4,7 @@ import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { useMemo } from "react";
 import { MantineReactTable, useMantineReactTable, type MRT_ColumnDef } from "mantine-react-table";
+import { Link } from "@/i18n/navigation";
 import { useProjects } from "../hooks/useProjects";
 import type { GitHubProject } from "../types/project.types";
 import { exportToCsv, exportToXlsx } from "@/lib/exportUtils";
@@ -17,6 +18,14 @@ export default function ProjectTable() {
         accessorKey: "title",
         header: "Title",
         size: 200,
+        Cell: ({ row }) => (
+          <Link
+            href={`/projects/${row.original.id}`}
+            className="text-blue-600 hover:text-blue-800"
+          >
+            {row.original.title}
+          </Link>
+        ),
       },
       {
         accessorKey: "shortDescription",
@@ -58,6 +67,15 @@ export default function ProjectTable() {
   const table = useMantineReactTable({
     columns,
     data: projects ?? [],
+    enableRowActions: true,
+    renderRowActions: ({ row }) => (
+      <Link
+        href={`/projects/${row.original.id}`}
+        className="text-blue-600 hover:text-blue-800"
+      >
+        View
+      </Link>
+    ),
     enablePagination: true,
     enableColumnFilters: true,
     enableSorting: true,
