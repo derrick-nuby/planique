@@ -14,12 +14,12 @@ export default function ProjectTable() {
   const columns = useMemo<MRT_ColumnDef<GitHubProject>[]>(
     () => [
       {
-        accessorKey: "name",
-        header: "Name",
+        accessorKey: "title",
+        header: "Title",
         size: 200,
       },
       {
-        accessorKey: "body",
+        accessorKey: "shortDescription",
         header: "Description",
         size: 300,
         Cell: ({ cell }) => (
@@ -27,12 +27,7 @@ export default function ProjectTable() {
         ),
       },
       {
-        accessorKey: "state",
-        header: "State",
-        size: 100,
-      },
-      {
-        accessorKey: "html_url",
+        accessorKey: "url",
         header: "URL",
         size: 250,
         Cell: ({ cell }) => (
@@ -47,17 +42,7 @@ export default function ProjectTable() {
         ),
       },
       {
-        accessorKey: "created_at",
-        header: "Created",
-        size: 120,
-        Cell: ({ cell }) => {
-          const date = new Date(cell.getValue<string>());
-          return <span className="text-sm text-gray-600">{date.toLocaleDateString()}</span>;
-        },
-        sortingFn: "datetime",
-      },
-      {
-        accessorKey: "updated_at",
+        accessorKey: "updatedAt",
         header: "Updated",
         size: 120,
         Cell: ({ cell }) => {
