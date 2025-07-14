@@ -25,5 +25,16 @@ export function exportToPdf<T extends object>(data: T, fileName: string) {
   const doc = new jsPDF();
   const content = JSON.stringify(data, null, 2);
   doc.text(content, 10, 10);
+import jsPDF from 'jspdf';
+import autoTable from 'jspdf-autotable';
+
+export function exportToPdf<T extends object>(data: T[], fileName: string) {
+  if (!data.length) return;
+  const doc = new jsPDF();
+  const headers = Object.keys(data[0]);
+  const rows = data.map(item =>
+    headers.map(h => String((item as Record<string, unknown>)[h] ?? ''))
+  );
+  autoTable(doc, { head: [headers], body: rows });
   doc.save(fileName.endsWith('.pdf') ? fileName : `${fileName}.pdf`);
 }
