@@ -8,5 +8,9 @@ export const useRepository = (name: string) => {
     queryFn: () => repositoryService.getRepository(name),
     enabled: !!name,
     staleTime: 3600 * 1000,
+    gcTime: 7200 * 1000,
+    refetchOnWindowFocus: false,
+    refetchOnMount: false,
+    refetchOnReconnect: false,
   });
 };

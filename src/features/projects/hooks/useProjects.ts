@@ -7,5 +7,9 @@ export const useProjects = () => {
     queryKey: ['projects'],
     queryFn: projectService.getProjects,
     staleTime: 3600 * 1000,
+    gcTime: 7200 * 1000,
+    refetchOnWindowFocus: false,
+    refetchOnMount: false,
+    refetchOnReconnect: false,
   });
 };
