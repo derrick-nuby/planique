@@ -1,6 +1,7 @@
 import localFont from "next/font/local";
 import "../globals.css";
 import Providers from "../providers";
+import BottomNavigation from "@/components/BottomNavigation";
 import { generateMetadata, viewport } from "../metadata";
 import { routing } from '@/i18n/routing';
 import { hasLocale, NextIntlClientProvider } from 'next-intl';
@@ -46,7 +47,8 @@ export default async function RootLayout({
       >
         <NextIntlClientProvider locale={locale} messages={messages}>
           <Providers>
-            {children}
+            <div className="min-h-screen pb-16">{children}</div>
+            <BottomNavigation />
           </Providers>
         </NextIntlClientProvider>
       </body>
