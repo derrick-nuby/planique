@@ -1,4 +1,5 @@
 import { utils, writeFile } from 'xlsx';
+import jsPDF from 'jspdf';
 
 export function exportToXlsx<T extends object>(data: T[], fileName: string) {
   const worksheet = utils.json_to_sheet(data);
@@ -18,4 +19,11 @@ export function exportToCsv<T extends object>(data: T[], fileName: string) {
   link.click();
   document.body.removeChild(link);
   URL.revokeObjectURL(link.href);
+}
+
+export function exportToPdf<T extends object>(data: T, fileName: string) {
+  const doc = new jsPDF();
+  const content = JSON.stringify(data, null, 2);
+  doc.text(content, 10, 10);
+  doc.save(fileName.endsWith('.pdf') ? fileName : `${fileName}.pdf`);
 }
